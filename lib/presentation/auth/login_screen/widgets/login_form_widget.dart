@@ -34,10 +34,6 @@ class FormLoginScreenWidget extends StatelessWidget {
                   Icons.email_outlined,
                   color: Colors.grey,
                 ),
-                /* prefixIconConstraints: BoxConstraints(
-                  minWidth: 0,
-                  minHeight: 50,
-                ), */
                 suffixIcon: Icon(
                   Icons.check,
                   color: Colors.grey,
@@ -104,7 +100,8 @@ class FormLoginScreenWidget extends StatelessWidget {
                       ),
                     );
                     // ignore: use_build_context_synchronously
-                    Navigator.pushReplacementNamed(context, '/');
+                    Navigator.pushReplacementNamed(
+                        context, '/inicio_screen_container_screen');
                   } else {
                     // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -127,6 +124,7 @@ class FormLoginScreenWidget extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -148,7 +146,7 @@ class FormLoginScreenWidget extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.pushNamed(context, '/register_screen_page');
                       },
                       child: const Text(
                         'Regístrate',

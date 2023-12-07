@@ -1,11 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:marco_david_s_application3/core/app_export.dart';
+import 'package:marco_david_s_application3/shared_preferences/user_preferences.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_image.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_title.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/custom_app_bar.dart';
 
-class PerfilScreen extends StatelessWidget {
+class PerfilScreen extends StatefulWidget {
   const PerfilScreen({Key? key}) : super(key: key);
+
+  @override
+  State<PerfilScreen> createState() => _PerfilScreenState();
+}
+
+class _PerfilScreenState extends State<PerfilScreen> {
+  /* Shared Preferences */
+  final prefs = UserPreferences();
+  @override
+  void initState() {
+    prefs.initPrefs();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +31,12 @@ class PerfilScreen extends StatelessWidget {
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 31.h),
                 child: Column(children: [
-                  Text("Your Profile Information",
+                  Text("Tu información personal",
                       style: CustomTextStyles.titleMediumBluegray400),
                   SizedBox(height: 31.v),
                   CustomImageView(
-                      imagePath: ImageConstant.img57,
+                      /* imagePath: ImageConstant.img57, */
+                      imagePath: prefs.img,
                       height: 134.adaptSize,
                       width: 134.adaptSize,
                       radius: BorderRadius.circular(64.h)),
@@ -35,20 +50,20 @@ class PerfilScreen extends StatelessWidget {
                                   CustomTextStyles.titleMediumBlack900Bold))),
                   SizedBox(height: 20.v),
                   _buildUsername(context,
-                      nombre: "ID", aryanStirkTwo: "3024982387"),
+                      nombre: "ID", aryanStirkTwo: prefs.id.toString()),
                   SizedBox(height: 6.v),
                   _buildUsername(context,
-                      nombre: "Nombre", aryanStirkTwo: "Aryan.Stirk2"),
+                      nombre: "Nombre", aryanStirkTwo: prefs.nombre),
                   SizedBox(height: 6.v),
                   _buildUsername(context,
-                      nombre: "Email",
-                      aryanStirkTwo: "aryan.stirk2nd@gmail.com"),
+                      nombre: "Email", aryanStirkTwo: prefs.correo),
+                  /* SizedBox(height: 6.v),
+                  _buildUsername(context,
+                      nombre: "Celular", aryanStirkTwo: "+620932938232"), */
                   SizedBox(height: 6.v),
                   _buildUsername(context,
-                      nombre: "Celular", aryanStirkTwo: "+620932938232"),
-                  SizedBox(height: 6.v),
-                  _buildUsername(context,
-                      nombre: "Fecha Nacimiento", aryanStirkTwo: "2000/07/20"),
+                      nombre: "Fecha Nacimiento",
+                      aryanStirkTwo: prefs.fecha_nac),
                   SizedBox(height: 5.v)
                 ]))));
   }

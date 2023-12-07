@@ -1,8 +1,6 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:marco_david_s_application3/core/constants/http_config.dart';
-import 'package:marco_david_s_application3/models/index.dart';
+import 'package:marco_david_s_application3/models/user_model.dart';
 import 'package:marco_david_s_application3/shared_preferences/user_preferences.dart';
 
 class LoginService {

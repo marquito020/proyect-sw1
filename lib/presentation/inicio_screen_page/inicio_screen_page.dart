@@ -1,5 +1,9 @@
 import 'package:marco_david_s_application3/presentation/contenido_list_fisica_screen/contenido_list_fisica_screen.dart';
+import 'package:marco_david_s_application3/presentation/contenido_list_historia_screen/contenido_list_historia_screen.dart';
+import 'package:marco_david_s_application3/presentation/contenido_list_literatura_screen/contenido_list_literatura_screen.dart';
+import 'package:marco_david_s_application3/presentation/contenido_list_quimica_screen/contenido_list_quimica_screen.dart';
 import 'package:marco_david_s_application3/presentation/perfil_screen/perfil_screen.dart';
+import 'package:marco_david_s_application3/shared_preferences/user_preferences.dart';
 
 import '../inicio_screen_page/widgets/fortyfive_item_widget.dart';
 import '../inicio_screen_page/widgets/fortyfour_item_widget.dart';
@@ -10,8 +14,21 @@ import 'package:marco_david_s_application3/widgets/app_bar/appbar_trailing_image
 import 'package:marco_david_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:marco_david_s_application3/widgets/custom_elevated_button.dart';
 
-class InicioScreenPage extends StatelessWidget {
+class InicioScreenPage extends StatefulWidget {
   const InicioScreenPage({Key? key}) : super(key: key);
+
+  @override
+  State<InicioScreenPage> createState() => _InicioScreenPageState();
+}
+
+class _InicioScreenPageState extends State<InicioScreenPage> {
+  /* Shared Preferences */
+  final prefs = UserPreferences();
+  @override
+  void initState() {
+    prefs.initPrefs();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +46,7 @@ class InicioScreenPage extends StatelessWidget {
                       children: [
                         Padding(
                             padding: EdgeInsets.only(left: 1.h),
-                            child: Text("Hola Rohan,",
+                            child: Text(prefs.nombre,
                                 style: theme.textTheme.headlineMedium)),
                         SizedBox(height: 3.v),
                         /* Padding(
@@ -98,7 +115,8 @@ class InicioScreenPage extends StatelessWidget {
                         return PerfilScreen();
                       }));
                     },
-                    imagePath: ImageConstant.imgUserImage,
+                    /* imagePath: ImageConstant.imgUserImage, */
+                    imagePath: prefs.img,
                     height: 40.adaptSize,
                     width: 40.adaptSize,
                     radius: BorderRadius.circular(20.h),
@@ -209,7 +227,7 @@ class InicioScreenPage extends StatelessWidget {
   Widget _buildFortyFour(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(left: 1.h),
-        child: GridView.builder(
+        /* child: GridView.builder(
             shrinkWrap: true,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisExtent: 63.v,
@@ -222,13 +240,117 @@ class InicioScreenPage extends StatelessWidget {
               return FortyfourItemWidget(onTapFisica: () {
                 onTapFisica(context);
               });
-            }));
+            }) */
+        child: Column(
+          children: [
+            Row(
+              children: [
+                CustomElevatedButton(
+                  width: 172.h,
+                  text: "Fisica",
+                  buttonStyle: CustomButtonStyles.none,
+                  decoration:
+                      CustomButtonStyles.gradientIndigoToPrimaryDecoration,
+                  onPressed: () {
+                    /* onTapFisica!.call(); */
+                    onTapFisica(context);
+                  },
+                ),
+                SizedBox(width: 10.h),
+                CustomElevatedButton(
+                  width: 172.h,
+                  text: "Historia",
+                  buttonStyle: CustomButtonStyles.none,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.h),
+                    gradient: LinearGradient(
+                      begin: Alignment(0.16, 0),
+                      end: Alignment(0.86, 0),
+                      colors: [
+                        appTheme.purpleA200,
+                        theme.colorScheme.primary,
+                      ],
+                    ),
+                  ),
+                  onPressed: () {
+                    /* onTapFisica!.call(); */
+                    onTapHistoria(context);
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 10.h),
+            Row(
+              children: [
+                CustomElevatedButton(
+                  width: 172.h,
+                  text: "Literatura",
+                  buttonStyle: CustomButtonStyles.none,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.h),
+                    gradient: LinearGradient(
+                      begin: Alignment(0.16, 0),
+                      end: Alignment(0.86, 0),
+                      colors: [
+                        appTheme.red700,
+                        theme.colorScheme.primary,
+                      ],
+                    ),
+                  ),
+                  onPressed: () {
+                    /* onTapFisica!.call(); */
+                    onTapLiteratura(context);
+                  },
+                ),
+                SizedBox(width: 10.h),
+                CustomElevatedButton(
+                  width: 172.h,
+                  text: "Quiimica",
+                  buttonStyle: CustomButtonStyles.none,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.h),
+                    gradient: LinearGradient(
+                      begin: Alignment(0.16, 0),
+                      end: Alignment(0.86, 0),
+                      colors: [
+                        appTheme.deepOrange400,
+                        theme.colorScheme.primary,
+                      ],
+                    ),
+                  ),
+                  onPressed: () {
+                    /* onTapFisica!.call(); */
+                    onTapQuimica(context);
+                  },
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 
   /// Navigates to the contenidoListQuimicaScreen when the action is triggered.
   onTapFisica(BuildContext context) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ContenidoListFisicaScreen();
+    }));
+  }
+
+  onTapHistoria(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ContenidoListHistoriaScreen();
+    }));
+  }
+
+  onTapLiteratura(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ContenidoListLiteraturaScreen();
+    }));
+  }
+
+  onTapQuimica(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return ContenidoListQuimicaScreen();
     }));
   }
 }

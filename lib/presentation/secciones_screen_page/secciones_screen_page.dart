@@ -5,13 +5,20 @@ import 'package:marco_david_s_application3/presentation/contenido_list_fisica_sc
 import 'package:marco_david_s_application3/presentation/contenido_list_historia_screen/contenido_list_historia_screen.dart';
 import 'package:marco_david_s_application3/presentation/contenido_list_literatura_screen/contenido_list_literatura_screen.dart';
 import 'package:marco_david_s_application3/presentation/contenido_list_quimica_screen/contenido_list_quimica_screen.dart';
+import 'package:marco_david_s_application3/presentation/perfil_screen/perfil_screen.dart';
+import 'package:marco_david_s_application3/shared_preferences/user_preferences.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_leading_image.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_trailing_image.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/custom_app_bar.dart';
 
-class SeccionesScreenPage extends StatelessWidget {
+class SeccionesScreenPage extends StatefulWidget {
   const SeccionesScreenPage({Key? key}) : super(key: key);
 
+  @override
+  State<SeccionesScreenPage> createState() => _SeccionesScreenPageState();
+}
+
+class _SeccionesScreenPageState extends State<SeccionesScreenPage> {
   @override
   Widget build(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
@@ -205,6 +212,14 @@ class SeccionesScreenPage extends StatelessWidget {
         ]);
   } */
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    /* Shared Preferences */
+    final prefs = UserPreferences();
+    @override
+    void initState() {
+      prefs.initPrefs();
+      super.initState();
+    }
+
     return CustomAppBar(
         leadingWidth: 44.h,
         leading: AppbarLeadingImage(
@@ -220,7 +235,15 @@ class SeccionesScreenPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 18.h, top: 8.v, right: 27.h),
               child: Stack(alignment: Alignment.bottomRight, children: [
                 CustomImageView(
-                    imagePath: ImageConstant.imgUserImage,
+                    onTap: () {
+                      print("Image tapped");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PerfilScreen();
+                      }));
+                    },
+                    /* imagePath: ImageConstant.imgUserImage, */
+                    imagePath: prefs.img,
                     height: 40.adaptSize,
                     width: 40.adaptSize,
                     radius: BorderRadius.circular(20.h),

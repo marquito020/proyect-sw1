@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget {
                 SizedBox(height: 1.v),
                 CustomImageView(
                   imagePath: ImageConstant.imgBook1,
-                  height: 307.v,
+                  height: 320.v,
                   width: 313.h,
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marco_david_s_application3/presentation/auth/login_screen/login_screen.dart';
+import 'package:marco_david_s_application3/presentation/auth/register_screen/register_screen.dart';
 import 'package:marco_david_s_application3/presentation/inicio_screen_container_screen/inicio_screen_container_screen.dart';
 import 'package:marco_david_s_application3/presentation/contenido_item_screen/contenido_item_screen.dart';
 import 'package:marco_david_s_application3/presentation/perfil_screen/perfil_screen.dart';
@@ -9,8 +10,11 @@ import 'package:marco_david_s_application3/presentation/contenido_list_literatur
 import 'package:marco_david_s_application3/presentation/contenido_list_quimica_screen/contenido_list_quimica_screen.dart';
 import 'package:marco_david_s_application3/presentation/splash_screen/splash_screen.dart';
 import 'package:marco_david_s_application3/presentation/app_navigation_screen/app_navigation_screen.dart';
+import 'package:marco_david_s_application3/shared_preferences/user_preferences.dart';
 
 class AppRoutes {
+  static const String registerScreenPage = '/register_screen_page';
+
   static const String inicioScreenPage = '/inicio_screen_page';
 
   static const String inicioScreenContainerScreen =
@@ -44,16 +48,23 @@ class AppRoutes {
 
   static const String loginScreenPage = '/login_screen_page';
 
-  static Map<String, WidgetBuilder> routes = {
-    inicioScreenContainerScreen: (context) => InicioScreenContainerScreen(),
-    contenidoItemScreen: (context) => ContenidoItemScreen(),
-    perfilScreen: (context) => PerfilScreen(),
-    contenidoListFisicaScreen: (context) => ContenidoListFisicaScreen(),
-    contenidoListHistoriaScreen: (context) => ContenidoListHistoriaScreen(),
-    contenidoListLiteraturaScreen: (context) => ContenidoListLiteraturaScreen(),
-    contenidoListQuimicaScreen: (context) => ContenidoListQuimicaScreen(),
-    splashScreen: (context) => SplashScreen(),
-    appNavigationScreen: (context) => AppNavigationScreen(),
-    loginScreenPage: (context) => LoginScreen(),
-  };
+  static Map<String, WidgetBuilder> getRoutes() {
+    final prefs = UserPreferences();
+
+    return <String, WidgetBuilder>{
+      inicioScreenContainerScreen: (context) => InicioScreenContainerScreen(),
+      /* contenidoItemScreen: (context) => ContenidoItemScreen(), */
+      perfilScreen: (context) => PerfilScreen(),
+      contenidoListFisicaScreen: (context) => ContenidoListFisicaScreen(),
+      contenidoListHistoriaScreen: (context) => ContenidoListHistoriaScreen(),
+      contenidoListLiteraturaScreen: (context) =>
+          ContenidoListLiteraturaScreen(),
+      contenidoListQuimicaScreen: (context) => ContenidoListQuimicaScreen(),
+      splashScreen: (context) => SplashScreen(),
+      appNavigationScreen: (context) => AppNavigationScreen(),
+      registerScreenPage: (context) => RegisterScreen(),
+      loginScreenPage: (context) =>
+          prefs.token != '' ? InicioScreenContainerScreen() : LoginScreen(),
+    };
+  }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:marco_david_s_application3/core/app_export.dart';
+import 'package:marco_david_s_application3/models/index.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_image.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_title.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/custom_app_bar.dart';
 
 class ContenidoItemScreen extends StatelessWidget {
-  const ContenidoItemScreen({Key? key}) : super(key: key);
+  ContenidoItemScreen({Key? key, required this.contenido}) : super(key: key);
+  Contenido contenido;
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +22,21 @@ class ContenidoItemScreen extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Titulo", style: theme.textTheme.headlineMedium),
+                        Text(contenido.titulo,
+                            style: theme.textTheme.headlineMedium),
                         SizedBox(height: 15.v),
                         _buildFortyThree(context),
                         SizedBox(height: 14.v),
-                        Text("Dollar goes up 21.3%",
+                        Text(contenido.p_descripcion,
                             style: theme.textTheme.headlineSmall),
                         SizedBox(height: 9.v),
                         Container(
                             width: 328.h,
                             margin: EdgeInsets.only(right: 18.h),
                             child: Text(
-                                "Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up, Dollar goes up,",
+                                contenido.contenido == null
+                                    ? ""
+                                    : contenido.contenido!,
                                 maxLines: 30,
                                 overflow: TextOverflow.ellipsis,
                                 style: CustomTextStyles.labelLargeBluegray400)),

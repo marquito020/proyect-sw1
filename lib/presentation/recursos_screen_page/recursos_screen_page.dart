@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:marco_david_s_application3/core/app_export.dart';
 import 'package:marco_david_s_application3/presentation/contenido_item_screen/contenido_item_screen.dart';
+import 'package:marco_david_s_application3/presentation/perfil_screen/perfil_screen.dart';
+import 'package:marco_david_s_application3/services/index.dart';
+import 'package:marco_david_s_application3/shared_preferences/user_preferences.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_leading_image.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/appbar_trailing_image.dart';
 import 'package:marco_david_s_application3/widgets/app_bar/custom_app_bar.dart';
 import 'package:marco_david_s_application3/widgets/custom_elevated_button.dart';
 import 'package:marco_david_s_application3/widgets/custom_text_form_field.dart';
+import 'package:provider/provider.dart';
 
 // ignore_for_file: must_be_immutable
-class RecursosScreenPage extends StatelessWidget {
+class RecursosScreenPage extends StatefulWidget {
   RecursosScreenPage({Key? key}) : super(key: key);
 
+  @override
+  State<RecursosScreenPage> createState() => _RecursosScreenPageState();
+}
+
+class _RecursosScreenPageState extends State<RecursosScreenPage> {
   TextEditingController codigoController = TextEditingController();
+  String titulo = "";
+  bool isPressed = false;
 
   @override
   Widget build(BuildContext context) {
+    final contenidoService = Provider.of<ContenidoService>(context);
+    final pertenenciaService = Provider.of<PertenenciaService>(context);
     mediaQueryData = MediaQuery.of(context);
     return SafeArea(
         child: Scaffold(
@@ -40,6 +53,33 @@ class RecursosScreenPage extends StatelessWidget {
                             hintText: "Codigo",
                             textInputAction: TextInputAction.done)),
                     SizedBox(height: 28.v),
+                    CustomElevatedButton(
+                        text: "Buscar",
+                        margin: EdgeInsets.only(left: 5.h, right: 6.h),
+                        buttonStyle: CustomButtonStyles.none,
+                        decoration: CustomButtonStyles
+                            .gradientIndigoToPrimaryDecoration,
+                        onPressed: () async {
+                          /* onTapAgregar(context); */
+                          if (codigoController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Codigo vacio")));
+                          } else {
+                            var contenido = await contenidoService
+                                .getContenidoById(codigoController.text);
+                            print(contenido);
+                            if (contenido['titulo'] == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text("Codigo invalido")));
+                            } else {
+                              setState(() {
+                                titulo = contenido['titulo'];
+                              });
+                            }
+                          }
+                          print(codigoController.text);
+                        }),
+                    SizedBox(height: 28.v),
                     CustomImageView(
                         imagePath: ImageConstant.imgImage,
                         height: 199.v,
@@ -53,22 +93,44 @@ class RecursosScreenPage extends StatelessWidget {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Titulo",
+                                  Text(titulo,
                                       style: theme.textTheme.titleMedium),
                                   SizedBox(height: 6.v),
                                   Text("Descripcion",
                                       style: theme.textTheme.bodyMedium)
                                 ]))),
                     SizedBox(height: 44.v),
-                    CustomElevatedButton(
-                        text: "Agregar",
-                        margin: EdgeInsets.only(left: 5.h, right: 6.h),
-                        buttonStyle: CustomButtonStyles.none,
-                        decoration: CustomButtonStyles
-                            .gradientIndigoToPrimaryDecoration,
-                        onPressed: () {
-                          onTapAgregar(context);
-                        }),
+                    isPressed
+                        ? CustomElevatedButton(
+                            text: "Agregar",
+                            margin: EdgeInsets.only(left: 5.h, right: 6.h),
+                            buttonStyle: CustomButtonStyles.none,
+                            decoration: CustomButtonStyles
+                                .gradientIndigoToPrimaryDecoration,
+                            onPressed: () async {
+                              /* onTapAgregar(context); */
+                              if (codigoController.text.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Codigo vacio")));
+                              } else {
+                                bool contenido = await pertenenciaService
+                                    .createPertenencia(codigoController.text);
+                                print(contenido);
+                                if (contenido == false) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "Codigo invalido o ya agregado")));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content:
+                                              Text("Agregado exitosamente")));
+                                }
+                              }
+                              print(codigoController.text);
+                            })
+                        : SizedBox(),
                     SizedBox(height: 29.v),
                     Divider(indent: 5.h, endIndent: 6.h),
                     SizedBox(height: 5.v)
@@ -78,6 +140,14 @@ class RecursosScreenPage extends StatelessWidget {
 
   /// Section Widget
   PreferredSizeWidget _buildAppBar(BuildContext context) {
+    /* Shared Preferences */
+    final prefs = UserPreferences();
+    @override
+    void initState() {
+      prefs.initPrefs();
+      super.initState();
+    }
+
     return CustomAppBar(
         leadingWidth: 44.h,
         leading: AppbarLeadingImage(
@@ -93,7 +163,15 @@ class RecursosScreenPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 18.h, top: 8.v, right: 27.h),
               child: Stack(alignment: Alignment.bottomRight, children: [
                 CustomImageView(
-                    imagePath: ImageConstant.imgUserImage,
+                    onTap: () {
+                      print("Image tapped");
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PerfilScreen();
+                      }));
+                    },
+                    /* imagePath: ImageConstant.imgUserImage, */
+                    imagePath: prefs.img,
                     height: 40.adaptSize,
                     width: 40.adaptSize,
                     radius: BorderRadius.circular(20.h),

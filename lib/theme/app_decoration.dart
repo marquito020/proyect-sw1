@@ -4,7 +4,7 @@ import 'package:marco_david_s_application3/core/app_export.dart';
 class AppDecoration {
   // Fill decorations
   static BoxDecoration get fillBlack => BoxDecoration(
-        color: appTheme.black900,
+        color: appTheme.indigo400,
       );
   static BoxDecoration get fillErrorContainer => BoxDecoration(
         color: theme.colorScheme.errorContainer,
